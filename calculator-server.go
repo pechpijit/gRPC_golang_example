@@ -6,10 +6,10 @@ import (
 	"log"
 	"net"
 
-	pb "gRPC/calculator"
-
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
+
+	pb "gRPC/calculator"
 )
 
 type CalculatorServer struct {
