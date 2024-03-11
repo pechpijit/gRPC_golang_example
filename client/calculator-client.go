@@ -11,11 +11,15 @@ import (
 	pb "gRPC/calculator"
 )
 
+const serviceIP = "localhost"
+const servicePort = 50051
+
 func main() {
-	conn, err := grpc.Dial("localhost:50051", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.Dial(fmt.Sprintf("%s:%d", serviceIP, servicePort), grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
+
 	defer conn.Close()
 	c := pb.NewCalculatorClient(conn)
 
@@ -23,5 +27,6 @@ func main() {
 	if err != nil {
 		log.Fatalf("could not add: %v", err)
 	}
+
 	fmt.Printf("Add result: %d\n", addResp.Result)
 }

@@ -39,15 +39,22 @@ func (s *CalculatorServer) Divide(ctx context.Context, in *pb.DivideRequest) (*p
 	return &pb.DivideResponse{Result: result}, nil
 }
 
+const serviceIP = "localhost"
+const servicePort = 50051
+
 func main() {
-	lis, err := net.Listen("tcp", ":50051")
+	lis, err := net.Listen("tcp", fmt.Sprintf("%s:%d", serviceIP, servicePort))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
+
 	s := grpc.NewServer()
 	reflection.Register(s)
+
 	pb.RegisterCalculatorServer(s, &CalculatorServer{})
-	fmt.Println("Server started on port 50051...")
+
+	fmt.Println(fmt.Sprintf("Server started on port %d...", servicePort))
+
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
